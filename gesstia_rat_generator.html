@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generador RAT — GesstIA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0e1a;color:#e2e8f0;line-height:1.6}
+
+/* Nav */
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo{font-size:22px;font-weight:800;letter-spacing:-.02em;background:linear-gradient(135deg,#818cf8,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo span{font-weight:300;color:#64748b;-webkit-text-fill-color:#64748b}
+.back-link{font-size:14px;color:#94a3b8;text-decoration:none;display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;transition:all .2s}
+.back-link:hover{color:#e2e8f0;background:rgba(255,255,255,.04)}
+.container{max-width:960px;margin:0 auto;padding:0 24px}
+
+/* Header */
+.page-header{text-align:center;padding:48px 0 32px}
+.page-header h1{font-size:32px;font-weight:700;margin-bottom:8px;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.page-header p{color:#94a3b8;font-size:15px;max-width:600px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;font-size:12px;color:#a5b4fc;margin-bottom:12px}
+
+/* Wizard progress */
+.wizard-progress{display:flex;justify-content:center;gap:4px;margin-bottom:32px;padding:0 24px}
+.w-step{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:500;color:#475569;transition:all .3s;cursor:pointer;position:relative}
+.w-step.active{background:rgba(99,102,241,.12);color:#818cf8}
+.w-step.completed{color:#22c55e}
+.w-step .num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;background:#1e293b;color:#64748b;flex-shrink:0}
+.w-step.active .num{background:#818cf8;color:#fff}
+.w-step.completed .num{background:#22c55e;color:#fff}
+.w-step .label{display:none}
+@media(min-width:640px){.w-step .label{display:inline}}
+.w-connector{width:24px;height:2px;background:#1e293b;flex-shrink:0;margin:0 2px}
+.w-connector.done{background:#22c55e}
+
+/* Form card */
+.form-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:36px;margin-bottom:24px;max-width:800px;margin-left:auto;margin-right:auto}
+.form-card h2{font-size:20px;font-weight:600;margin-bottom:4px}
+.form-card .subtitle{color:#94a3b8;font-size:14px;margin-bottom:24px}
+.form-card .hidden{display:none}
+
+/* Form fields */
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:14px;font-weight:500;color:#cbd5e1;margin-bottom:6px}
+.form-group label .required{color:#f87171;margin-left:2px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 14px;background:#0f1326;border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#e2e8f0;font-size:14px;font-family:'Inter',sans-serif;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:#818cf8;box-shadow:0 0 0 3px rgba(129,140,248,.15)}
+.form-group textarea{min-height:80px;resize:vertical}
+.form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+.form-group .hint{font-size:12px;color:#64748b;margin-top:4px}
+
+/* Checkbox and toggle */
+.checkbox-group{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.checkbox-item{display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;cursor:pointer;transition:all .2s;font-size:13px;color:#94a3b8;user-select:none}
+.checkbox-item:hover{border-color:rgba(129,140,248,.3);color:#e2e8f0}
+.checkbox-item.selected{background:rgba(99,102,241,.1);border-color:#818cf8;color:#e2e8f0}
+.checkbox-item input{display:none}
+.checkbox-item .check{width:16px;height:16px;border:2px solid #475569;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.checkbox-item.selected .check{border-color:#818cf8;background:#818cf8}
+.checkbox-item.selected .check::after{content:'✓';font-size:11px;color:#fff;font-weight:700}
+
+/* Repeatable sections */
+.repeat-section{border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:20px;margin-bottom:16px;background:rgba(255,255,255,.02);position:relative}
+.repeat-section .remove-btn{position:absolute;top:12px;right:12px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#f87171;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;transition:all .2s}
+.repeat-section .remove-btn:hover{background:rgba(239,68,68,.2)}
+.add-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:rgba(99,102,241,.08);border:1px dashed rgba(99,102,241,.3);border-radius:8px;color:#818cf8;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.add-btn:hover{background:rgba(99,102,241,.15);border-color:#818cf8}
+
+/* Dynamic tags */
+.tag-input-wrapper{display:flex;flex-wrap:wrap;gap:8px;padding:8px;background:#0f1326;border:1px solid rgba(255,255,255,.08);border-radius:8px;min-height:44px;cursor:text}
+.tag-input-wrapper .tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.25);border-radius:6px;font-size:12px;color:#a5b4fc}
+.tag-input-wrapper .tag .remove{color:#f87171;cursor:pointer;font-size:14px;line-height:1;margin-left:2px}
+.tag-input-wrapper .tag .remove:hover{color:#ef4444}
+.tag-input-wrapper input{flex:1;min-width:100px;border:none;background:transparent;color:#e2e8f0;font-size:13px;padding:4px 0;outline:none;font-family:'Inter',sans-serif}
+
+/* Buttons */
+.form-actions{display:flex;gap:12px;justify-content:space-between;max-width:800px;margin:0 auto;padding-top:8px;flex-wrap:wrap}
+.form-actions .left,.form-actions .right{display:flex;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;border:none;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'Inter',sans-serif}
+.btn-primary{background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(99,102,241,.35)}
+.btn-secondary{background:rgba(255,255,255,.06);color:#e2e8f0}
+.btn-secondary:hover{background:rgba(255,255,255,.1)}
+.btn-success{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+.btn-success:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(34,197,94,.3)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+
+/* RAT Document Output */
+.rat-output{display:none}
+.rat-output.visible{display:block}
+.doc-paper{background:#fff;color:#1e293b;border-radius:12px;padding:48px 40px;max-width:800px;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.doc-paper .watermark{text-align:center;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid #e2e8f0}
+.doc-paper .watermark h1{font-size:20px;font-weight:700;color:#1e293b}
+.doc-paper .watermark p{font-size:12px;color:#64748b;margin-top:4px}
+.doc-paper .watermark .doc-badge{display:inline-block;padding:3px 12px;background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;border-radius:100px;font-size:11px;font-weight:600;margin-top:8px}
+.doc-paper h2{font-size:15px;font-weight:700;color:#1e293b;margin-top:24px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #e2e8f0}
+.doc-paper h3{font-size:13px;font-weight:600;color:#334155;margin-top:16px;margin-bottom:6px}
+.doc-paper table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 16px}
+.doc-paper table th,.doc-paper table td{padding:8px 10px;border:1px solid #e2e8f0;text-align:left;vertical-align:top}
+.doc-paper table th{background:#f8fafc;font-weight:600;color:#475569;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+.doc-paper table td{color:#334155}
+.doc-paper .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:12px;margin:8px 0 16px}
+.doc-paper .info-item{display:flex;gap:6px}
+.doc-paper .info-item .label{font-weight:600;color:#475569;min-width:90px}
+.doc-paper .info-item .value{color:#334155}
+.doc-paper .alert-box{padding:10px 14px;background:#fef3c7;border:1px solid #fbbf24;border-radius:6px;font-size:11px;color:#92400e;margin:12px 0}
+.doc-print-bar{display:flex;gap:12px;justify-content:center;padding:24px 0 48px;flex-wrap:wrap}
+
+/* Print styles */
+@media print{
+  body{background:#fff!important;color:#000!important}
+  nav,.page-header,.wizard-progress,.form-card,.form-actions,.doc-print-bar{display:none!important}
+  .rat-output.visible{display:block!important}
+  .doc-paper{box-shadow:none!important;padding:20px!important;border-radius:0!important}
+  .doc-paper h2{page-break-after:avoid}
+  .doc-paper table{page-break-inside:avoid}
+  @page{margin:15mm}
+}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .35s ease-out}
+
+/* Responsive */
+@media(max-width:640px){
+  .form-card{padding:20px}
+  .form-row{grid-template-columns:1fr}
+  .wizard-progress{overflow-x:auto;padding:0 12px;justify-content:flex-start}
+  .doc-paper{padding:24px 16px}
+  .doc-paper .info-grid{grid-template-columns:1fr}
+  .form-actions .left,.form-actions .right{width:100%}
+  .form-actions .right{justify-content:flex-end}
+}
+
+/* Notification toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:10px;font-size:14px;font-weight:500;z-index:1000;opacity:0;transition:all .3s;pointer-events:none}
+.toast.show{opacity:1;bottom:32px}
+.toast.success{background:#065f46;border:1px solid #22c55e;color:#86efac}
+.toast.error{background:#7f1d1d;border:1px solid #ef4444;color:#fca5a5}
+
+/* Modal background for print preview overlay */
+.print-overlay{display:flex;justify-content:center}
+</style>
+</head>
+<body>
+
+<nav class="container">
+  <a href="/" class="back-link">← Volver a GesstIA</a>
+  <div class="logo">Gesst<span>IA</span></div>
+</nav>
+
+<div class="page-header">
+  <div class="badge">🔒 Ley 21.719 · Protección de Datos Personales</div>
+  <h1>Generador de RAT</h1>
+  <p>Registro de Actividades de Tratamiento — Complete los datos requeridos por el Artículo 23 de la Ley 21.719 para generar su documento oficial.</p>
+</div>
+
+<!-- Wizard Progress -->
+<div class="wizard-progress" id="wizardProgress">
+  <div class="w-step active" data-step="1"><span class="num">1</span><span class="label">Responsable</span></div>
+  <div class="w-connector"></div>
+  <div class="w-step" data-step="2"><span class="num">2</span><span class="label">Tratamiento</span></div>
+  <div class="w-connector"></div>
+  <div class="w-step" data-step="3"><span class="num">3</span><span class="label">Datos y Sujetos</span></div>
+  <div class="w-connector"></div>
+  <div class="w-step" data-step="4"><span class="num">4</span><span class="label">Almacenamiento</span></div>
+  <div class="w-connector"></div>
+  <div class="w-step" data-step="5"><span class="num">5</span><span class="label">Seguridad</span></div>
+  <div class="w-connector"></div>
+  <div class="w-step" data-step="6"><span class="num">6</span><span class="label">Transferencias</span></div>
+  <div class="w-connector"></div>
+  <div class="w-step" data-step="7"><span class="num">7</span><span class="label">Base Legal</span></div>
+</div>
+
+<!-- ====== STEP 1: RESPONSABLE ====== -->
+<div class="form-card fade-in" id="step1">
+  <h2>Responsable del Tratamiento</h2>
+  <p class="subtitle">Identificación del responsable del tratamiento de datos (Art. 23, N°1 Ley 21.719).</p>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Nombre o Razón Social <span class="required">*</span></label>
+      <input type="text" id="r_razon" placeholder="Ej: Empresa Ejemplo S.A.">
+    </div>
+    <div class="form-group">
+      <label>RUT <span class="required">*</span></label>
+      <input type="text" id="r_rut" placeholder="Ej: 76.123.456-7">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Dirección <span class="required">*</span></label>
+      <input type="text" id="r_direccion" placeholder="Ej: Av. Providencia 1234, Santiago">
+    </div>
+    <div class="form-group">
+      <label>Comuna / Ciudad</label>
+      <input type="text" id="r_comuna" placeholder="Ej: Providencia, Santiago">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Correo Electrónico <span class="required">*</span></label>
+      <input type="email" id="r_email" placeholder="Ej: contacto@empresa.cl">
+    </div>
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="text" id="r_telefono" placeholder="Ej: +56 2 2XXX XXXX">
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Representante Legal en Chile <span class="required">*</span></label>
+    <input type="text" id="r_representante" placeholder="Nombre completo del representante legal">
+  </div>
+  <div class="form-group">
+    <label>Encargado de Protección de Datos (si aplica)</label>
+    <input type="text" id="r_dpo" placeholder="Nombre y contacto del DPO">
+  </div>
+</div>
+
+<!-- ====== STEP 2: TRATAMIENTO ====== -->
+<div class="form-card fade-in hidden" id="step2">
+  <h2>Finalidad del Tratamiento</h2>
+  <p class="subtitle">Propósitos específicos y legítimos de cada actividad de tratamiento (Art. 23, N°2).</p>
+
+  <div id="tratamientosContainer">
+    <div class="repeat-section" data-index="0">
+      <button class="remove-btn" onclick="removeTratamiento(this)" style="display:none">✕ Eliminar</button>
+      <div class="form-group">
+        <label>Nombre de la Actividad de Tratamiento <span class="required">*</span></label>
+        <input type="text" class="t_nombre" placeholder="Ej: Gestión de Recursos Humanos">
+      </div>
+      <div class="form-group">
+        <label>Descripción / Finalidad Específica <span class="required">*</span></label>
+        <textarea class="t_descripcion" placeholder="Describa el propósito específico y legítimo de esta actividad de tratamiento..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Responsable Interno de esta Actividad</label>
+        <input type="text" class="t_responsable" placeholder="Nombre del área o persona a cargo">
+      </div>
+    </div>
+  </div>
+  <button class="add-btn" onclick="addTratamiento()">+ Agregar otra actividad de tratamiento</button>
+</div>
+
+<!-- ====== STEP 3: DATOS Y SUJETOS ====== -->
+<div class="form-card fade-in hidden" id="step3">
+  <h2>Categorías de Datos y Sujetos</h2>
+  <p class="subtitle">Tipos de datos personales tratados y los titulares de dichos datos (Art. 23, N°3).</p>
+
+  <h3 style="font-size:15px;font-weight:600;color:#e2e8f0;margin-bottom:12px;margin-top:4px">Categorías de Datos Tratados</h3>
+
+  <div class="form-group">
+    <label>Datos de Identificación <span class="required">*</span></label>
+    <div class="checkbox-group" id="cat_identificacion">
+      <label class="checkbox-item"><input type="checkbox" value="Nombre completo"><span class="check"></span>Nombre completo</label>
+      <label class="checkbox-item"><input type="checkbox" value="RUT"><span class="check"></span>RUT</label>
+      <label class="checkbox-item"><input type="checkbox" value="Dirección"><span class="check"></span>Dirección</label>
+      <label class="checkbox-item"><input type="checkbox" value="Teléfono"><span class="check"></span>Teléfono</label>
+      <label class="checkbox-item"><input type="checkbox" value="Correo electrónico"><span class="check"></span>Correo electrónico</label>
+      <label class="checkbox-item"><input type="checkbox" value="Fecha de nacimiento"><span class="check"></span>Fecha de nacimiento</label>
+      <label class="checkbox-item"><input type="checkbox" value="Nacionalidad"><span class="check"></span>Nacionalidad</label>
+      <label class="checkbox-item"><input type="checkbox" value="Estado civil"><span class="check"></span>Estado civil</label>
+      <label class="checkbox-item"><input type="checkbox" value="Fotografía"><span class="check"></span>Fotografía</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Datos Laborales y de Seguridad Social</label>
+    <div class="checkbox-group" id="cat_laborales">
+      <label class="checkbox-item"><input type="checkbox" value="Historial laboral"><span class="check"></span>Historial laboral</label>
+      <label class="checkbox-item"><input type="checkbox" value="Remuneraciones"><span class="check"></span>Remuneraciones</label>
+      <label class="checkbox-item"><input type="checkbox" value="Cargo / puesto de trabajo"><span class="check"></span>Cargo / puesto de trabajo</label>
+      <label class="checkbox-item"><input type="checkbox" value="Evaluaciones desempeño"><span class="check"></span>Evaluaciones desempeño</label>
+      <label class="checkbox-item"><input type="checkbox" value="Registro asistencia"><span class="check"></span>Registro asistencia</label>
+      <label class="checkbox-item"><input type="checkbox" value="AFP / Isapre / Mutual"><span class="check"></span>AFP / Isapre / Mutual</label>
+      <label class="checkbox-item"><input type="checkbox" value="Licencias médicas"><span class="check"></span>Licencias médicas</label>
+      <label class="checkbox-item"><input type="checkbox" value="Contrato de trabajo"><span class="check"></span>Contrato de trabajo</label>
+      <label class="checkbox-item"><input type="checkbox" value="Referencias laborales"><span class="check"></span>Referencias laborales</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Datos Sensibles (Art. 18 Ley 21.719)</label>
+    <div class="checkbox-group" id="cat_sensibles">
+      <label class="checkbox-item"><input type="checkbox" value="Datos de salud"><span class="check"></span>Datos de salud</label>
+      <label class="checkbox-item"><input type="checkbox" value="Condiciones médicas preexistentes"><span class="check"></span>Condiciones médicas preexistentes</label>
+      <label class="checkbox-item"><input type="checkbox" value="Exámenes médicos"><span class="check"></span>Exámenes médicos</label>
+      <label class="checkbox-item"><input type="checkbox" value="Discapacidad"><span class="check"></span>Discapacidad</label>
+      <label class="checkbox-item"><input type="checkbox" value="Datos biométricos"><span class="check"></span>Datos biométricos (huella, reconocimiento facial)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Afiliación sindical"><span class="check"></span>Afiliación sindical</label>
+      <label class="checkbox-item"><input type="checkbox" value="Datos genéticos"><span class="check"></span>Datos genéticos</label>
+      <label class="checkbox-item"><input type="checkbox" value="Orientación sexual"><span class="check"></span>Orientación sexual</label>
+      <label class="checkbox-item"><input type="checkbox" value="Convicciones religiosas/filosóficas"><span class="check"></span>Convicciones religiosas / filosóficas</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Otros Datos</label>
+    <div class="checkbox-group" id="cat_otros">
+      <label class="checkbox-item"><input type="checkbox" value="Datos financieros"><span class="check"></span>Datos financieros / bancarios</label>
+      <label class="checkbox-item"><input type="checkbox" value="Datos académicos"><span class="check"></span>Datos académicos / formación</label>
+      <label class="checkbox-item"><input type="checkbox" value="Datos de contacto de emergencia"><span class="check"></span>Contacto de emergencia</label>
+      <label class="checkbox-item"><input type="checkbox" value="Datos de carga familiar"><span class="check"></span>Datos de carga familiar</label>
+      <label class="checkbox-item"><input type="checkbox" value="Datos de vehículo"><span class="check"></span>Datos de vehículo / licencia de conducir</label>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:600;color:#e2e8f0;margin:20px 0 12px">Sujetos u Origen de los Datos (Titulares)</h3>
+  <div class="form-group">
+    <label>Titulares de los Datos <span class="required">*</span></label>
+    <div class="checkbox-group" id="sujetos">
+      <label class="checkbox-item"><input type="checkbox" value="Trabajadores"><span class="check"></span>Trabajadores</label>
+      <label class="checkbox-item"><input type="checkbox" value="Postulantes / candidatos"><span class="check"></span>Postulantes / candidatos</label>
+      <label class="checkbox-item"><input type="checkbox" value="Beneficiarios"><span class="check"></span>Beneficiarios</label>
+      <label class="checkbox-item"><input type="checkbox" value="Contratistas / prestadores"><span class="check"></span>Contratistas / prestadores</label>
+      <label class="checkbox-item"><input type="checkbox" value="Clientes / proveedores"><span class="check"></span>Clientes / proveedores</label>
+      <label class="checkbox-item"><input type="checkbox" value="Cargas familiares"><span class="check"></span>Cargas familiares</label>
+      <label class="checkbox-item"><input type="checkbox" value="Socios / accionistas"><span class="check"></span>Socios / accionistas</label>
+      <label class="checkbox-item"><input type="checkbox" value="Público general"><span class="check"></span>Público general</label>
+    </div>
+  </div>
+</div>
+
+<!-- ====== STEP 4: ALMACENAMIENTO ====== -->
+<div class="form-card fade-in hidden" id="step4">
+  <h2>Ubicación y Almacenamiento</h2>
+  <p class="subtitle">Lugar donde se almacenan los datos y plazos de conservación (Art. 23, N°5).</p>
+
+  <div class="form-group">
+    <label>Ubicación del Almacenamiento <span class="required">*</span></label>
+    <div class="checkbox-group" id="almacenamiento">
+      <label class="checkbox-item"><input type="checkbox" value="Servidores propios (on-premise)"><span class="check"></span>Servidores propios (on-premise)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Servidores en nube (cloud)"><span class="check"></span>Servidores en nube (cloud)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Archivos físicos / papel"><span class="check"></span>Archivos físicos / papel</label>
+      <label class="checkbox-item"><input type="checkbox" value="Correo electrónico"><span class="check"></span>Correo electrónico</label>
+      <label class="checkbox-item"><input type="checkbox" value="Aplicaciones móviles"><span class="check"></span>Aplicaciones móviles</label>
+      <label class="checkbox-item"><input type="checkbox" value="Bases de datos locales"><span class="check"></span>Bases de datos locales</label>
+      <label class="checkbox-item"><input type="checkbox" value="Sistemas ERP/CRM"><span class="check"></span>Sistemas ERP / CRM</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Proveedor Cloud (si aplica)</label>
+    <input type="text" id="cloud_proveedor" placeholder="Ej: AWS, Google Cloud, Microsoft Azure, etc.">
+  </div>
+  <div class="form-group">
+    <label>Ubicación Geográfica de los Servidores</label>
+    <input type="text" id="ubicacion_servidores" placeholder="Ej: Chile, Estados Unidos, Unión Europea">
+  </div>
+
+  <h3 style="font-size:15px;font-weight:600;color:#e2e8f0;margin:20px 0 12px">Plazos de Conservación</h3>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Datos laborales y contractuales</label>
+      <select id="plazo_laboral">
+        <option value="5 años desde término de relación laboral">5 años desde término de relación laboral</option>
+        <option value="10 años desde término de relación laboral">10 años desde término de relación laboral</option>
+        <option value="Duración de la relación contractual">Duración de la relación contractual</option>
+        <option value="Indefinido / mientras exista obligación legal">Indefinido / mientras exista obligación legal</option>
+        <option value="Otro (especificar en observaciones)">Otro (especificar en observaciones)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Datos de salud y licencias médicas</label>
+      <select id="plazo_salud">
+        <option value="5 años">5 años</option>
+        <option value="10 años">10 años</option>
+        <option value="Mientras dure la relación laboral + 5 años">Mientras dure la relación laboral + 5 años</option>
+        <option value="Indefinido / mientras exista obligación legal">Indefinido / mientras exista obligación legal</option>
+        <option value="Otro (especificar en observaciones)">Otro (especificar en observaciones)</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>Datos financieros y contables</label>
+      <select id="plazo_financiero">
+        <option value="5 años (Código Tributario)">5 años (Código Tributario)</option>
+        <option value="6 años (Código de Comercio)">6 años (Código de Comercio)</option>
+        <option value="10 años">10 años</option>
+        <option value="Indefinido / mientras exista obligación legal">Indefinido / mientras exista obligación legal</option>
+        <option value="Otro (especificar en observaciones)">Otro (especificar en observaciones)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Datos de postulantes (no contratados)</label>
+      <select id="plazo_postulantes">
+        <option value="6 meses">6 meses</option>
+        <option value="1 año">1 año</option>
+        <option value="2 años">2 años</option>
+        <option value="No se conservan datos de postulantes">No se conservan datos de postulantes</option>
+        <option value="Otro (especificar en observaciones)">Otro (especificar en observaciones)</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Observaciones sobre plazos de conservación</label>
+    <textarea id="plazo_observaciones" placeholder="Cualquier información adicional sobre plazos de conservación según normativa sectorial específica..."></textarea>
+  </div>
+</div>
+
+<!-- ====== STEP 5: SEGURIDAD ====== -->
+<div class="form-card fade-in hidden" id="step5">
+  <h2>Medidas de Seguridad</h2>
+  <p class="subtitle">Medidas técnicas y organizativas implementadas para proteger los datos personales (Art. 23, N°7).</p>
+
+  <h3 style="font-size:15px;font-weight:600;color:#e2e8f0;margin-bottom:12px">Medidas Técnicas</h3>
+  <div class="form-group">
+    <div class="checkbox-group" id="seg_tecnicas">
+      <label class="checkbox-item"><input type="checkbox" value="Cifrado de datos en reposo"><span class="check"></span>Cifrado de datos en reposo</label>
+      <label class="checkbox-item"><input type="checkbox" value="Cifrado de datos en tránsito (SSL/TLS)"><span class="check"></span>Cifrado en tránsito (SSL/TLS)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Autenticación multifactor (MFA)"><span class="check"></span>Autenticación multifactor (MFA)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Control de acceso basado en roles"><span class="check"></span>Control de acceso basado en roles</label>
+      <label class="checkbox-item"><input type="checkbox" value="Firewall y detección de intrusiones"><span class="check"></span>Firewall y detección de intrusiones</label>
+      <label class="checkbox-item"><input type="checkbox" value="Antivirus / antimalware"><span class="check"></span>Antivirus / antimalware</label>
+      <label class="checkbox-item"><input type="checkbox" value="Copias de seguridad cifradas"><span class="check"></span>Copias de seguridad cifradas</label>
+      <label class="checkbox-item"><input type="checkbox" value="Registro de accesos (logs)"><span class="check"></span>Registro de accesos (logs)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Segmentación de redes"><span class="check"></span>Segmentación de redes</label>
+      <label class="checkbox-item"><input type="checkbox" value="Anonimización / seudonimización"><span class="check"></span>Anonimización / seudonimización</label>
+    </div>
+  </div>
+
+  <h3 style="font-size:15px;font-weight:600;color:#e2e8f0;margin:20px 0 12px">Medidas Organizativas</h3>
+  <div class="form-group">
+    <div class="checkbox-group" id="seg_organizativas">
+      <label class="checkbox-item"><input type="checkbox" value="Política de protección de datos"><span class="check"></span>Política de protección de datos</label>
+      <label class="checkbox-item"><input type="checkbox" value="Procedimiento de respuesta a incidentes"><span class="check"></span>Procedimiento de respuesta a incidentes</label>
+      <label class="checkbox-item"><input type="checkbox" value="Capacitación anual en protección de datos"><span class="check"></span>Capacitación anual en protección de datos</label>
+      <label class="checkbox-item"><input type="checkbox" value="Acuerdos de confidencialidad con personal"><span class="check"></span>Acuerdos de confidencialidad con personal</label>
+      <label class="checkbox-item"><input type="checkbox" value="Evaluación de impacto (EIPD)"><span class="check"></span>Evaluación de impacto (EIPD)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Registro de violaciones de seguridad"><span class="check"></span>Registro de violaciones de seguridad</label>
+      <label class="checkbox-item"><input type="checkbox" value="Auditorías periódicas"><span class="check"></span>Auditorías periódicas</label>
+      <label class="checkbox-item"><input type="checkbox" value="Designación de DPO"><span class="check"></span>Designación de Delegado de Protección de Datos</label>
+      <label class="checkbox-item"><input type="checkbox" value="Gestión de consentimientos"><span class="check"></span>Gestión de consentimientos</label>
+      <label class="checkbox-item"><input type="checkbox" value="Protocolo de destrucción segura"><span class="check"></span>Protocolo de destrucción segura de datos</label>
+    </div>
+  </div>
+</div>
+
+<!-- ====== STEP 6: TRANSFERENCIAS ====== -->
+<div class="form-card fade-in hidden" id="step6">
+  <h2>Transferencias de Datos</h2>
+  <p class="subtitle">Comunicación de datos a terceros, incluyendo destinatarios y finalidad (Art. 23, N°8).</p>
+
+  <div id="transferenciasContainer">
+    <div class="repeat-section" data-index="0">
+      <button class="remove-btn" onclick="removeTransferencia(this)" style="display:none">✕ Eliminar</button>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Destinatario / Tercero <span class="required">*</span></label>
+          <input type="text" class="tr_destinatario" placeholder="Ej: Mutual de Seguridad">
+        </div>
+        <div class="form-group">
+          <label>RUT del Destinatario</label>
+          <input type="text" class="tr_rut" placeholder="Ej: 70.123.456-7">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Finalidad de la Transferencia <span class="required">*</span></label>
+        <textarea class="tr_finalidad" placeholder="Ej: Gestión de licencias médicas y accidentes laborales"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>País de Destino</label>
+          <input type="text" class="tr_pais" placeholder="Ej: Chile">
+        </div>
+        <div class="form-group">
+          <label>Base Legal de la Transferencia</label>
+          <select class="tr_base">
+            <option value="Consentimiento del titular">Consentimiento del titular</option>
+            <option value="Obligación legal">Obligación legal</option>
+            <option value="Ejecución de contrato">Ejecución de contrato</option>
+            <option value="Interés legítimo del responsable">Interés legítimo del responsable</option>
+            <option value="Decisión de adecuación">Decisión de adecuación (país adecuado)</option>
+            <option value="Cláusulas contractuales tipo">Cláusulas contractuales tipo</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Datos Transferidos</label>
+        <input type="text" class="tr_datos" placeholder="Ej: Datos de identificación, salud, laborales">
+      </div>
+    </div>
+  </div>
+  <button class="add-btn" onclick="addTransferencia()">+ Agregar otra transferencia</button>
+</div>
+
+<!-- ====== STEP 7: BASE LEGAL ====== -->
+<div class="form-card fade-in hidden" id="step7">
+  <h2>Base Legal del Tratamiento</h2>
+  <p class="subtitle">Fundamento jurídico que habilita el tratamiento de datos personales (Art. 23, N°4).</p>
+
+  <div class="form-group">
+    <label>Base(s) Legal(es) Aplicable(s) <span class="required">*</span></label>
+    <div class="checkbox-group" id="bases_legales">
+      <label class="checkbox-item"><input type="checkbox" value="Obligación legal (Art. 11, letra a)"><span class="check"></span>Obligación legal (Art. 11, letra a)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Ejecución de contrato (Art. 11, letra b)"><span class="check"></span>Ejecución de contrato (Art. 11, letra b)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Consentimiento explícito del titular (Art. 11, letra c)"><span class="check"></span>Consentimiento explícito del titular (Art. 11, letra c)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Interés legítimo (Art. 11, letra d)"><span class="check"></span>Interés legítimo del responsable (Art. 11, letra d)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Interés vital del titular (Art. 11, letra e)"><span class="check"></span>Interés vital del titular (Art. 11, letra e)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Cumplimiento de misión pública (Art. 11, letra f)"><span class="check"></span>Cumplimiento de misión pública (Art. 11, letra f)</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Base Legal para Datos Sensibles</label>
+    <div class="checkbox-group" id="bases_sensibles">
+      <label class="checkbox-item"><input type="checkbox" value="Consentimiento explícito (Art. 19)"><span class="check"></span>Consentimiento explícito del titular (Art. 19)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Obligación legal o laboral (Art. 19, letra a)"><span class="check"></span>Obligación legal o laboral (Art. 19, letra a)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Interés vital del titular o terceros (Art. 19, letra b)"><span class="check"></span>Interés vital del titular o terceros (Art. 19, letra b)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Salud pública o medicina preventiva (Art. 19, letra c)"><span class="check"></span>Salud pública o medicina preventiva (Art. 19, letra c)</label>
+      <label class="checkbox-item"><input type="checkbox" value="Fines estadísticos o investigación (Art. 19, letra d)"><span class="check"></span>Fines estadísticos o investigación (Art. 19, letra d)</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Observaciones sobre la base legal</label>
+    <textarea id="base_observaciones" placeholder="Detalle adicional sobre el fundamento jurídico del tratamiento de datos..."></textarea>
+  </div>
+</div>
+
+<!-- ====== ACTIONS ====== -->
+<div class="form-actions" id="formActions">
+  <div class="left">
+    <button class="btn btn-secondary" onclick="prevStep()" id="btnPrev" style="visibility:hidden">← Anterior</button>
+  </div>
+  <div class="right">
+    <button class="btn btn-primary" onclick="nextStep()" id="btnNext">Siguiente →</button>
+    <button class="btn btn-success" onclick="generateRAT()" id="btnGenerate" style="display:none">✓ Generar RAT</button>
+  </div>
+</div>
+
+<!-- ====== RAT DOCUMENT OUTPUT ====== -->
+<div class="rat-output" id="ratOutput">
+  <div class="doc-paper" id="ratDocument"></div>
+  <div class="doc-print-bar">
+    <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+    <button class="btn btn-secondary" onclick="editRAT()">✏️ Editar datos</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ====== STEP NAVIGATION ======
+let currentStep = 1;
+const totalSteps = 7;
+
+function showStep(n) {
+  for(let i=1; i<=totalSteps; i++) {
+    const el = document.getElementById('step'+i);
+    el.classList.toggle('hidden', i !== n);
+    el.classList.add('fade-in');
+  }
+  document.querySelectorAll('.w-step').forEach(s => {
+    const step = parseInt(s.dataset.step);
+    s.classList.toggle('active', step === n);
+    s.classList.toggle('completed', step < n);
+  });
+  document.querySelectorAll('.w-connector').forEach((c,i) => {
+    c.classList.toggle('done', i+1 < n);
+  });
+  document.getElementById('btnPrev').style.visibility = n === 1 ? 'hidden' : 'visible';
+  document.getElementById('btnNext').style.display = n === totalSteps ? 'none' : 'inline-flex';
+  document.getElementById('btnGenerate').style.display = n === totalSteps ? 'inline-flex' : 'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+  currentStep = n;
+}
+
+function nextStep() {
+  if(currentStep < totalSteps) {
+    if(!validateStep(currentStep)) return;
+    showStep(currentStep + 1);
+  }
+}
+
+function prevStep() {
+  if(currentStep > 1) showStep(currentStep - 1);
+}
+
+function goToStep(n) {
+  // Only allow going to completed or next steps
+  if(n <= currentStep + 1) {
+    // Validate all intermediate steps
+    for(let i=currentStep; i<n; i++) {
+      if(!validateStep(i)) return;
+    }
+    showStep(n);
+  }
+}
+
+document.querySelectorAll('.w-step').forEach(el => {
+  el.addEventListener('click', () => goToStep(parseInt(el.dataset.step)));
+});
+
+// ====== CHECKBOX TOGGLES ======
+document.querySelectorAll('.checkbox-item').forEach(el => {
+  el.addEventListener('click', function(e) {
+    if(e.target.tagName === 'INPUT') return;
+    const cb = this.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    this.classList.toggle('selected', cb.checked);
+  });
+});
+document.querySelectorAll('.checkbox-item input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener('change', function() {
+    this.closest('.checkbox-item').classList.toggle('selected', this.checked);
+  });
+});
+
+// ====== REPEATABLE: TRATAMIENTOS ======
+let tratIndex = 1;
+function addTratamiento() {
+  const container = document.getElementById('tratamientosContainer');
+  const div = document.createElement('div');
+  div.className = 'repeat-section';
+  div.dataset.index = tratIndex;
+  div.innerHTML = `
+    <button class="remove-btn" onclick="removeTratamiento(this)">✕ Eliminar</button>
+    <div class="form-group">
+      <label>Nombre de la Actividad de Tratamiento <span class="required">*</span></label>
+      <input type="text" class="t_nombre" placeholder="Ej: Gestión de Nómina">
+    </div>
+    <div class="form-group">
+      <label>Descripción / Finalidad Específica <span class="required">*</span></label>
+      <textarea class="t_descripcion" placeholder="Describa el propósito específico y legítimo de esta actividad de tratamiento..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Responsable Interno de esta Actividad</label>
+      <input type="text" class="t_responsable" placeholder="Nombre del área o persona a cargo">
+    </div>
+  `;
+  container.appendChild(div);
+  tratIndex++;
+}
+function removeTratamiento(btn) {
+  const section = btn.closest('.repeat-section');
+  if(document.querySelectorAll('#tratamientosContainer .repeat-section').length > 1) {
+    section.remove();
+  }
+}
+
+// ====== REPEATABLE: TRANSFERENCIAS ======
+let trfIndex = 1;
+function addTransferencia() {
+  const container = document.getElementById('transferenciasContainer');
+  const div = document.createElement('div');
+  div.className = 'repeat-section';
+  div.dataset.index = trfIndex;
+  div.innerHTML = `
+    <button class="remove-btn" onclick="removeTransferencia(this)">✕ Eliminar</button>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Destinatario / Tercero <span class="required">*</span></label>
+        <input type="text" class="tr_destinatario" placeholder="Ej: Mutual de Seguridad">
+      </div>
+      <div class="form-group">
+        <label>RUT del Destinatario</label>
+        <input type="text" class="tr_rut" placeholder="Ej: 70.123.456-7">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Finalidad de la Transferencia <span class="required">*</span></label>
+      <textarea class="tr_finalidad" placeholder="Ej: Gestión de licencias médicas y accidentes laborales"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>País de Destino</label>
+        <input type="text" class="tr_pais" placeholder="Ej: Chile">
+      </div>
+      <div class="form-group">
+        <label>Base Legal de la Transferencia</label>
+        <select class="tr_base">
+          <option value="Consentimiento del titular">Consentimiento del titular</option>
+          <option value="Obligación legal">Obligación legal</option>
+          <option value="Ejecución de contrato">Ejecución de contrato</option>
+          <option value="Interés legítimo del responsable">Interés legítimo del responsable</option>
+          <option value="Decisión de adecuación">Decisión de adecuación (país adecuado)</option>
+          <option value="Cláusulas contractuales tipo">Cláusulas contractuales tipo</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Datos Transferidos</label>
+      <input type="text" class="tr_datos" placeholder="Ej: Datos de identificación, salud, laborales">
+    </div>
+  `;
+  container.appendChild(div);
+  trfIndex++;
+}
+function removeTransferencia(btn) {
+  const section = btn.closest('.repeat-section');
+  if(document.querySelectorAll('#transferenciasContainer .repeat-section').length > 1) {
+    section.remove();
+  }
+}
+
+// ====== VALIDATION ======
+function validateStep(n) {
+  let valid = true;
+  const showError = (msg) => {
+    showToast(msg, 'error');
+    valid = false;
+  };
+
+  if(n === 1) {
+    if(!document.getElementById('r_razon').value.trim()) showError('Complete el nombre o razón social.');
+    if(!document.getElementById('r_rut').value.trim()) showError('Complete el RUT.');
+    if(!document.getElementById('r_direccion').value.trim()) showError('Complete la dirección.');
+    if(!document.getElementById('r_email').value.trim()) showError('Complete el correo electrónico.');
+    if(!document.getElementById('r_representante').value.trim()) showError('Complete el nombre del representante legal.');
+  }
+
+  if(n === 2) {
+    const items = document.querySelectorAll('#tratamientosContainer .repeat-section');
+    let hasData = false;
+    items.forEach(item => {
+      if(item.querySelector('.t_nombre').value.trim() && item.querySelector('.t_descripcion').value.trim()) hasData = true;
+    });
+    if(!hasData) showError('Complete al menos un tratamiento con nombre y descripción.');
+  }
+
+  if(n === 3) {
+    const idChecked = document.querySelectorAll('#cat_identificacion input:checked').length > 0;
+    const subjectsChecked = document.querySelectorAll('#sujetos input:checked').length > 0;
+    if(!idChecked) showError('Seleccione al menos una categoría de datos de identificación.');
+    if(!subjectsChecked) showError('Seleccione al menos un tipo de titular de datos.');
+  }
+
+  if(n === 4) {
+    const storageChecked = document.querySelectorAll('#almacenamiento input:checked').length > 0;
+    if(!storageChecked) showError('Seleccione al menos una ubicación de almacenamiento.');
+  }
+
+  return valid;
+}
+
+// ====== TOAST ======
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ====== GET CHECKED VALUES ======
+function getChecked(containerId) {
+  return Array.from(document.querySelectorAll('#' + containerId + ' input:checked')).map(cb => cb.value);
+}
+
+// ====== GENERATE RAT ======
+function generateRAT() {
+  // Validate last step
+  const bases = getChecked('bases_legales');
+  if(bases.length === 0) {
+    showToast('Seleccione al menos una base legal para el tratamiento.', 'error');
+    return;
+  }
+
+  // Collect all data
+  const data = {
+    // Step 1 - Responsable
+    razon: document.getElementById('r_razon').value.trim(),
+    rut: document.getElementById('r_rut').value.trim(),
+    direccion: document.getElementById('r_direccion').value.trim(),
+    comuna: document.getElementById('r_comuna').value.trim(),
+    email: document.getElementById('r_email').value.trim(),
+    telefono: document.getElementById('r_telefono').value.trim(),
+    representante: document.getElementById('r_representante').value.trim(),
+    dpo: document.getElementById('r_dpo').value.trim(),
+
+    // Step 2 - Tratamientos
+    tratamientos: [],
+    // Step 3 - Categorías
+    cat_identificacion: getChecked('cat_identificacion'),
+    cat_laborales: getChecked('cat_laborales'),
+    cat_sensibles: getChecked('cat_sensibles'),
+    cat_otros: getChecked('cat_otros'),
+    sujetos: getChecked('sujetos'),
+
+    // Step 4 - Almacenamiento
+    almacenamiento: getChecked('almacenamiento'),
+    cloud_proveedor: document.getElementById('cloud_proveedor').value.trim(),
+    ubicacion_servidores: document.getElementById('ubicacion_servidores').value.trim(),
+    plazo_laboral: document.getElementById('plazo_laboral').value,
+    plazo_salud: document.getElementById('plazo_salud').value,
+    plazo_financiero: document.getElementById('plazo_financiero').value,
+    plazo_postulantes: document.getElementById('plazo_postulantes').value,
+    plazo_observaciones: document.getElementById('plazo_observaciones').value.trim(),
+
+    // Step 5 - Seguridad
+    seg_tecnicas: getChecked('seg_tecnicas'),
+    seg_organizativas: getChecked('seg_organizativas'),
+
+    // Step 6 - Transferencias
+    transferencias: [],
+
+    // Step 7 - Base legal
+    bases_legales: bases,
+    bases_sensibles: getChecked('bases_sensibles'),
+    base_observaciones: document.getElementById('base_observaciones').value.trim(),
+  };
+
+  // Collect tratamientos
+  document.querySelectorAll('#tratamientosContainer .repeat-section').forEach(item => {
+    const nombre = item.querySelector('.t_nombre').value.trim();
+    const desc = item.querySelector('.t_descripcion').value.trim();
+    const resp = item.querySelector('.t_responsable').value.trim();
+    if(nombre || desc) {
+      data.tratamientos.push({nombre, descripcion: desc, responsable: resp});
+    }
+  });
+
+  // Collect transferencias
+  document.querySelectorAll('#transferenciasContainer .repeat-section').forEach(item => {
+    const dest = item.querySelector('.tr_destinatario').value.trim();
+    const rut = item.querySelector('.tr_rut').value.trim();
+    const fin = item.querySelector('.tr_finalidad').value.trim();
+    const pais = item.querySelector('.tr_pais').value.trim();
+    const base = item.querySelector('.tr_base').value;
+    const datos = item.querySelector('.tr_datos').value.trim();
+    if(dest || fin) {
+      data.transferencias.push({destinatario: dest, rut, finalidad: fin, pais, base, datos});
+    }
+  });
+
+  renderRATDocument(data);
+}
+
+// ====== RENDER DOCUMENT ======
+function renderRATDocument(data) {
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('es-CL', {year:'numeric',month:'long',day:'numeric'});
+  const version = '1.0';
+
+  const allCats = [...data.cat_identificacion, ...data.cat_laborales, ...data.cat_sensibles, ...data.cat_otros];
+  const hasSensitive = data.cat_sensibles.length > 0;
+
+  const doc = document.getElementById('ratDocument');
+
+  let tratRows = '';
+  data.tratamientos.forEach((t,i) => {
+    tratRows += `<tr><td>${i+1}</td><td>${escHtml(t.nombre)}</td><td>${escHtml(t.descripcion)}</td><td>${escHtml(t.responsable || '—')}</td></tr>`;
+  });
+
+  let transferRows = '';
+  data.transferencias.forEach((t,i) => {
+    transferRows += `<tr><td>${i+1}</td><td>${escHtml(t.destinatario)}${t.rut ? '<br><small>RUT: '+escHtml(t.rut)+'</small>' : ''}</td><td>${escHtml(t.finalidad)}</td><td>${escHtml(t.pais || 'Chile')}</td><td>${escHtml(t.base)}</td><td>${escHtml(t.datos || '—')}</td></tr>`;
+  });
+
+  doc.innerHTML = `
+    <div class="watermark">
+      <h1>Registro de Actividades de Tratamiento (RAT)</h1>
+      <p>Ley N° 21.719 — Protección de Datos Personales · Artículo 23</p>
+      <div class="doc-badge">Versión ${version} · Generado: ${dateStr}</div>
+    </div>
+
+    <h2>1. Identificación del Responsable del Tratamiento</h2>
+    <div class="info-grid">
+      <div class="info-item"><span class="label">Razón Social:</span><span class="value">${escHtml(data.razon)}</span></div>
+      <div class="info-item"><span class="label">RUT:</span><span class="value">${escHtml(data.rut)}</span></div>
+      <div class="info-item"><span class="label">Dirección:</span><span class="value">${escHtml(data.direccion)}${data.comuna ? ', '+escHtml(data.comuna) : ''}</span></div>
+      <div class="info-item"><span class="label">Contacto:</span><span class="value">${escHtml(data.email)}${data.telefono ? ' · '+escHtml(data.telefono) : ''}</span></div>
+      <div class="info-item"><span class="label">Representante Legal:</span><span class="value">${escHtml(data.representante)}</span></div>
+      ${data.dpo ? '<div class="info-item"><span class="label">DPO:</span><span class="value">'+escHtml(data.dpo)+'</span></div>' : ''}
+    </div>
+
+    <h2>2. Fines y Propósitos del Tratamiento</h2>
+    ${data.tratamientos.length === 0 ? '<p style="font-size:12px;color:#64748b">No se registraron actividades de tratamiento.</p>' : `
+    <table>
+      <thead><tr><th style="width:40px">#</th><th>Actividad</th><th>Finalidad Específica</th><th>Responsable Interno</th></tr></thead>
+      <tbody>${tratRows}</tbody>
+    </table>`}
+
+    <h2>3. Categorías de Datos Personales</h2>
+    ${data.cat_identificacion.length > 0 ? '<h3>Datos de Identificación</h3><p style="font-size:12px">'+data.cat_identificacion.join(', ')+'</p>' : ''}
+    ${data.cat_laborales.length > 0 ? '<h3>Datos Laborales y de Seguridad Social</h3><p style="font-size:12px">'+data.cat_laborales.join(', ')+'</p>' : ''}
+    ${hasSensitive ? '<div class="alert-box">⚠️ Se tratan datos sensibles. Se requiere consentimiento explícito o base legal específica (Art. 18-19 Ley 21.719).</div>' : ''}
+    ${data.cat_sensibles.length > 0 ? '<h3>Datos Sensibles</h3><p style="font-size:12px">'+data.cat_sensibles.join(', ')+'</p>' : ''}
+    ${data.cat_otros.length > 0 ? '<h3>Otros Datos</h3><p style="font-size:12px">'+data.cat_otros.join(', ')+'</p>' : ''}
+
+    <h3>Titulares de los Datos</h3>
+    <p style="font-size:12px">${data.sujetos.length > 0 ? data.sujetos.join(', ') : '—'}</p>
+
+    <h2>4. Base Legal del Tratamiento</h2>
+    <h3>Base legal aplicable</h3>
+    <p style="font-size:12px">${data.bases_legales.join('<br>')}</p>
+    ${data.bases_sensibles.length > 0 ? '<h3>Base legal para datos sensibles</h3><p style="font-size:12px">'+data.bases_sensibles.join('<br>')+'</p>' : ''}
+    ${data.base_observaciones ? '<p style="font-size:12px;color:#475569;margin-top:8px"><em>Observaciones: '+escHtml(data.base_observaciones)+'</em></p>' : ''}
+
+    <h2>5. Almacenamiento y Plazos de Conservación</h2>
+    <h3>Ubicación del Almacenamiento</h3>
+    <p style="font-size:12px">${data.almacenamiento.length > 0 ? data.almacenamiento.join(', ') : '—'}</p>
+    ${data.cloud_proveedor ? '<p style="font-size:12px"><strong>Proveedor cloud:</strong> '+escHtml(data.cloud_proveedor)+'</p>' : ''}
+    ${data.ubicacion_servidores ? '<p style="font-size:12px"><strong>Ubicación geográfica:</strong> '+escHtml(data.ubicacion_servidores)+'</p>' : ''}
+
+    <h3>Plazos de Conservación</h3>
+    <table>
+      <thead><tr><th>Categoría de Datos</th><th>Plazo de Conservación</th></tr></thead>
+      <tbody>
+        <tr><td>Datos laborales y contractuales</td><td>${escHtml(data.plazo_laboral)}</td></tr>
+        <tr><td>Datos de salud y licencias médicas</td><td>${escHtml(data.plazo_salud)}</td></tr>
+        <tr><td>Datos financieros y contables</td><td>${escHtml(data.plazo_financiero)}</td></tr>
+        <tr><td>Datos de postulantes (no contratados)</td><td>${escHtml(data.plazo_postulantes)}</td></tr>
+      </tbody>
+    </table>
+    ${data.plazo_observaciones ? '<p style="font-size:12px;color:#475569"><em>Observaciones: '+escHtml(data.plazo_observaciones)+'</em></p>' : ''}
+
+    <h2>6. Medidas de Seguridad</h2>
+    ${data.seg_tecnicas.length > 0 ? '<h3>Medidas Técnicas</h3><p style="font-size:12px">'+data.seg_tecnicas.join(', ')+'</p>' : ''}
+    ${data.seg_organizativas.length > 0 ? '<h3>Medidas Organizativas</h3><p style="font-size:12px">'+data.seg_organizativas.join(', ')+'</p>' : ''}
+
+    <h2>7. Transferencias de Datos a Terceros</h2>
+    ${data.transferencias.length === 0 ? '<p style="font-size:12px;color:#64748b">No se registran transferencias de datos a terceros.</p>' : `
+    <table>
+      <thead><tr><th style="width:32px">#</th><th>Destinatario</th><th>Finalidad</th><th>País</th><th>Base Legal</th><th>Datos</th></tr></thead>
+      <tbody>${transferRows}</tbody>
+    </table>`}
+
+    <h2>8. Información del Documento</h2>
+    <div class="info-grid">
+      <div class="info-item"><span class="label">Versión:</span><span class="value">${version}</span></div>
+      <div class="info-item"><span class="label">Fecha generación:</span><span class="value">${dateStr}</span></div>
+      <div class="info-item"><span class="label">Generado por:</span><span class="value">GesstIA — Generador de RAT</span></div>
+      <div class="info-item"><span class="label">Próxima revisión:</span><span class="value">${addMonths(dateStr, 12)}</span></div>
+    </div>
+
+    <div style="margin-top:32px;padding-top:16px;border-top:2px solid #e2e8f0;font-size:11px;color:#94a3b8;text-align:center">
+      Documento generado electrónicamente. Este documento debe mantenerse actualizado y a disposición de la<br>
+      Agencia de Protección de Datos Personales conforme al Artículo 23 de la Ley N° 21.719.
+    </div>
+  `;
+
+  // Show output, hide form
+  document.querySelectorAll('.form-card').forEach(c => c.classList.add('hidden'));
+  document.getElementById('formActions').style.display = 'none';
+  document.getElementById('wizardProgress').style.display = 'none';
+  document.getElementById('ratOutput').classList.add('visible');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  showToast('✅ RAT generado exitosamente. Puede imprimirlo o guardarlo como PDF.', 'success');
+}
+
+function escHtml(s) {
+  if(!s) return '';
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+function addMonths(dateStr, months) {
+  const d = new Date();
+  d.setMonth(d.getMonth() + months);
+  return d.toLocaleDateString('es-CL', {year:'numeric',month:'long',day:'numeric'});
+}
+
+function editRAT() {
+  document.getElementById('ratOutput').classList.remove('visible');
+  document.getElementById('formActions').style.display = 'flex';
+  document.getElementById('wizardProgress').style.display = 'flex';
+  document.querySelectorAll('.form-card').forEach(c => c.classList.add('hidden'));
+  document.getElementById('step' + currentStep).classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
