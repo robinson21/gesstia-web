@@ -9,7 +9,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#0a0e1a;color:#e2e8f0;line-height:1.6}
 .container{max-width:1100px;margin:0 auto;padding:0 24px}
-/* Nav */
 nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06)}
 .logo{font-size:22px;font-weight:800;letter-spacing:-.02em;background:linear-gradient(135deg,#818cf8,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .logo span{font-weight:300;color:#64748b;-webkit-text-fill-color:#64748b}
@@ -21,30 +20,25 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(99,102,241,.35)}
 .btn-outline{background:transparent;color:#818cf8;border:1px solid rgba(99,102,241,.3)}
 .btn-outline:hover{background:rgba(99,102,241,.08)}
-/* Hero */
 .hero{padding:80px 0 60px;text-align:center}
 .hero h1{font-size:52px;font-weight:800;letter-spacing:-.03em;line-height:1.1;margin-bottom:20px}
 .hero h1 span{background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{font-size:18px;color:#94a3b8;max-width:640px;margin:0 auto 36px}
 .hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;font-size:13px;color:#a5b4fc;margin-bottom:24px}
-/* Stats */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:60px 0;padding:40px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
 .stat{text-align:center}
 .stat-num{font-size:36px;font-weight:800;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .stat-label{font-size:14px;color:#94a3b8;margin-top:4px}
-/* Sections */
 .section{padding:80px 0}
 .section-title{font-size:32px;font-weight:700;margin-bottom:16px;text-align:center}
 .section-sub{font-size:16px;color:#94a3b8;text-align:center;max-width:600px;margin:0 auto 48px}
-/* Features grid */
 .features{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .feature-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:32px 24px;transition:all .3s}
 .feature-card:hover{background:rgba(255,255,255,.06);border-color:rgba(99,102,241,.3);transform:translateY(-2px)}
 .feature-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
 .feature-card h3{font-size:18px;font-weight:600;margin-bottom:8px}
 .feature-card p{font-size:14px;color:#94a3b8;line-height:1.6}
-/* Pricing */
 .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
 .price-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:36px 28px;text-align:center;transition:all .3s;position:relative}
 .price-card.featured{border-color:#6366f1;background:rgba(99,102,241,.06);transform:scale(1.03)}
@@ -55,15 +49,42 @@ nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0
 .price-features{list-style:none;text-align:left;margin:24px 0}
 .price-features li{padding:8px 0;font-size:14px;color:#94a3b8;display:flex;align-items:center;gap:8px}
 .price-features li::before{content:"✓";color:#818cf8;font-weight:700}
-/* CTA */
+.diagnostic-section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:24px;margin-top:40px}
 .cta-section{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.04));border:1px solid rgba(99,102,241,.15);border-radius:20px;padding:60px;text-align:center;margin:60px 0}
 .cta-section h2{font-size:36px;font-weight:700;margin-bottom:16px}
 .cta-section p{color:#94a3b8;max-width:500px;margin:0 auto 28px;font-size:16px}
-/* Footer */
 footer{padding:40px 0;border-top:1px solid rgba(255,255,255,.06);text-align:center;font-size:14px;color:#64748b}
-/* Diagnostic embed */
-.diagnostic-section{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;margin-top:40px}
-.diagnostic-section iframe{width:100%;height:600px;border:none}
+/* Diagnóstico inline styles */
+.diag-box{font-size:14px}
+.diag-progress{display:flex;gap:4px;margin-bottom:20px}
+.diag-bar{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.06)}
+.diag-bar.done{background:#6366f1}
+.diag-bar.current{background:rgba(99,102,241,.4)}
+.diag-q{margin-bottom:14px;padding:16px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid rgba(255,255,255,.06)}
+.diag-q p{margin:0 0 10px;font-size:14px;color:#f1f5f9;font-weight:500}
+.diag-opts{display:flex;gap:10px;flex-wrap:wrap}
+.diag-opts button{padding:8px 18px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:transparent;color:#94a3b8;cursor:pointer;font-size:13px;transition:all .2s;font-family:inherit}
+.diag-opts button:hover{border-color:#6366f1;color:#a5b4fc}
+.diag-opts button.selected{background:rgba(99,102,241,.2);border-color:#6366f1;color:#a5b4fc}
+.diag-nav{display:flex;justify-content:space-between;margin-top:20px}
+.diag-nav button{padding:10px 24px;border-radius:8px;border:none;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;font-family:inherit}
+.diag-step h3{font-size:18px;margin-bottom:4px;color:#f1f5f9}
+.diag-step .diag-sub{color:#94a3b8;font-size:13px;margin-bottom:16px}
+.btn-d-next{background:#6366f1;color:#fff}
+.btn-d-next:hover{background:#4f46e5}
+.btn-d-prev{background:rgba(255,255,255,.06);color:#94a3b8}
+.btn-d-prev:hover{background:rgba(255,255,255,.1)}
+.diag-results{padding:0}
+.diag-results .big-score{font-size:48px;font-weight:800;color:#818cf8;margin:8px 0 4px}
+.diag-results .score-label{color:#94a3b8;font-size:14px;margin-bottom:20px}
+.diag-cat{padding:12px 16px;margin-bottom:10px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid rgba(255,255,255,.06)}
+.diag-cat h4{font-size:14px;margin-bottom:6px}
+.diag-cat .q-det{font-size:13px;padding:3px 0;color:#94a3b8}
+.diag-rec{padding:10px 14px;margin-bottom:6px;background:rgba(239,68,68,.06);border-left:3px solid #ef4444;border-radius:4px;font-size:13px;color:#fca5a5}
+.diag-plan{background:rgba(99,102,241,.06);border-radius:8px;padding:16px;margin:16px 0;font-size:13px}
+.diag-plan strong{color:#e2e8f0}
+.btn-d-print{padding:10px 24px;border-radius:8px;border:none;font-weight:600;font-size:14px;cursor:pointer;background:#6366f1;color:#fff;margin-right:10px;font-family:inherit}
+.btn-d-restart{padding:10px 24px;border-radius:8px;border:none;font-weight:600;font-size:14px;cursor:pointer;background:rgba(255,255,255,.06);color:#94a3b8;font-family:inherit}
 @media(max-width:768px){
   .hero h1{font-size:32px}
   .features,.pricing-grid{grid-template-columns:1fr}
@@ -101,18 +122,9 @@ footer{padding:40px 0;border-top:1px solid rgba(255,255,255,.06);text-align:cent
 <!-- Stats -->
 <div class="container">
 <div class="stats">
-<div class="stat">
-<div class="stat-num">7+</div>
-<div class="stat-label">Normas chilenas integradas</div>
-</div>
-<div class="stat">
-<div class="stat-num">15 min</div>
-<div class="stat-label">Diagnóstico exprés de cumplimiento</div>
-</div>
-<div class="stat">
-<div class="stat-num">5 meses</div>
-<div class="stat-label">Para la nueva Ley de Datos</div>
-</div>
+<div class="stat"><div class="stat-num">7+</div><div class="stat-label">Normas chilenas integradas</div></div>
+<div class="stat"><div class="stat-num">15 min</div><div class="stat-label">Diagnóstico exprés de cumplimiento</div></div>
+<div class="stat"><div class="stat-num">5 meses</div><div class="stat-label">Para la nueva Ley de Datos</div></div>
 </div>
 </div>
 
@@ -121,36 +133,12 @@ footer{padding:40px 0;border-top:1px solid rgba(255,255,255,.06);text-align:cent
 <h2 class="section-title">Todo lo que necesitas para cumplir</h2>
 <p class="section-sub">Desde matrices IPER hasta la nueva Ley de Protección de Datos — una sola plataforma.</p>
 <div class="features">
-<div class="feature-card">
-<div class="feature-icon" style="background:rgba(99,102,241,.12)">📋</div>
-<h3>Diagnóstico Inteligente</h3>
-<p>15 preguntas y sabes exactamente dónde están tus brechas frente a la Ley 21.719. Con plan de acción priorizado.</p>
-</div>
-<div class="feature-card">
-<div class="feature-icon" style="background:rgba(139,92,246,.12)">🔐</div>
-<h3>Registro de Datos (RAT)</h3>
-<p>Genera tu Registro de Actividades de Tratamiento obligatorio por ley. Sabrás qué datos tienes, dónde y cómo los proteges.</p>
-</div>
-<div class="feature-card">
-<div class="feature-icon" style="background:rgba(167,139,250,.12)">📄</div>
-<h3>Documentos Automáticos</h3>
-<p>RIOHS, RIHS, matrices, consentimientos, políticas. Con los datos de tu empresa, los documentos se generan solos.</p>
-</div>
-<div class="feature-card">
-<div class="feature-icon" style="background:rgba(129,140,248,.12)">⚡</div>
-<h3>Alertas de Vencimiento</h3>
-<p>Nunca más se te pasa un plazo. GesstIA te avisa cuando un documento, certificación o normativa está por vencer.</p>
-</div>
-<div class="feature-card">
-<div class="feature-icon" style="background:rgba(99,102,241,.12)">📊</div>
-<h3>Dashboard Jefatura</h3>
-<p>El gerente ve indicadores de cumplimiento en tiempo real, no carpetas. SST deja de ser un gasto y se vuelve gestión medible.</p>
-</div>
-<div class="feature-card">
-<div class="feature-icon" style="background:rgba(139,92,246,.12)">🤖</div>
-<h3>Agente Normativo</h3>
-<p>Pregunta en lenguaje natural: "¿Qué exige el DS 44 para excavaciones?" y obtén la respuesta al instante, con la fuente normativa.</p>
-</div>
+<div class="feature-card"><div class="feature-icon" style="background:rgba(99,102,241,.12)">📋</div><h3>Diagnóstico Inteligente</h3><p>15 preguntas y sabes exactamente dónde están tus brechas frente a la Ley 21.719. Con plan de acción priorizado.</p></div>
+<div class="feature-card"><div class="feature-icon" style="background:rgba(139,92,246,.12)">🔐</div><h3>Registro de Datos (RAT)</h3><p>Genera tu Registro de Actividades de Tratamiento obligatorio por ley. Sabrás qué datos tienes, dónde y cómo los proteges.</p></div>
+<div class="feature-card"><div class="feature-icon" style="background:rgba(167,139,250,.12)">📄</div><h3>Documentos Automáticos</h3><p>RIOHS, RIHS, matrices, consentimientos, políticas. Con los datos de tu empresa, los documentos se generan solos.</p></div>
+<div class="feature-card"><div class="feature-icon" style="background:rgba(129,140,248,.12)">⚡</div><h3>Alertas de Vencimiento</h3><p>Nunca más se te pasa un plazo. GesstIA te avisa cuando un documento, certificación o normativa está por vencer.</p></div>
+<div class="feature-card"><div class="feature-icon" style="background:rgba(99,102,241,.12)">📊</div><h3>Dashboard Jefatura</h3><p>El gerente ve indicadores de cumplimiento en tiempo real, no carpetas. SST deja de ser un gasto y se vuelve gestión medible.</p></div>
+<div class="feature-card"><div class="feature-icon" style="background:rgba(139,92,246,.12)">🤖</div><h3>Agente Normativo</h3><p>Pregunta en lenguaje natural: "¿Qué exige el DS 44 para excavaciones?" y obtén la respuesta al instante, con la fuente normativa.</p></div>
 </div>
 </section>
 
@@ -210,99 +198,7 @@ footer{padding:40px 0;border-top:1px solid rgba(255,255,255,.06);text-align:cent
 <h2 class="section-title">¿Estás listo para diciembre 2026?</h2>
 <p class="section-sub">Responde 15 preguntas y obtén tu diagnóstico de cumplimiento con plan de acción priorizado. Gratis, sin registro.</p>
 <div class="diagnostic-section">
-<iframe srcdoc='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Diagnóstico GesstIA</title><style>body{font-family:Inter,sans-serif;background:#0f1322;color:#e2e8f0;margin:0;padding:20px;font-size:13px}*{box-sizing:border-box}.step{padding:16px}.step h3{font-size:16px;margin-bottom:6px;color:#f1f5f9}.step p{margin-bottom:14px;color:#94a3b8;font-size:12px}.q{margin-bottom:12px;padding:12px;background:rgba(255,255,255,.03);border-radius:8px;border:1px solid rgba(255,255,255,.06)}.q p{margin:0 0 8px;font-size:13px;color:#f1f5f9;font-weight:500}.opts{display:flex;gap:8px;flex-wrap:wrap}.opts button{padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:transparent;color:#94a3b8;cursor:pointer;font-size:12px;transition:all .2s}.opts button:hover{border-color:#6366f1;color:#a5b4fc}.opts button.selected{background:rgba(99,102,241,.2);border-color:#6366f1;color:#a5b4fc}.nav{display:flex;justify-content:space-between;margin-top:16px}.nav button{padding:8px 20px;border-radius:6px;border:none;font-weight:600;font-size:13px;cursor:pointer;transition:all .2s}.btn-next{background:#6366f1;color:#fff}.btn-next:hover{background:#4f46e5}.btn-prev{background:rgba(255,255,255,.06);color:#94a3b8}.btn-prev:hover{background:rgba(255,255,255,.1)}.progress{display:flex;gap:4px;margin-bottom:16px;padding:0 16px}.bar{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.06)}.bar.done{background:#6366f1}.bar.current{background:rgba(99,102,241,.4)}.results{padding:16px}.results h3{font-size:18px;margin-bottom:4px}.results .score{font-size:40px;font-weight:800;color:#818cf8;margin:12px 0 4px}.results .score-label{color:#94a3b8;font-size:13px;margin-bottom:20px}.cat{padding:10px 12px;margin-bottom:8px;background:rgba(255,255,255,.03);border-radius:6px;border:1px solid rgba(255,255,255,.06)}.cat h4{font-size:13px;margin-bottom:4px}.cat p{font-size:12px;color:#94a3b8}.q-det{padding:6px 0;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04)}.rec{padding:12px;margin-bottom:8px;background:rgba(99,102,241,.08);border-left:3px solid #6366f1;border-radius:4px;font-size:13px;color:#c7d2fe}.btn-print{background:#6366f1;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px;margin-top:12px}.restart{background:transparent;color:#94a3b8;border:1px solid rgba(255,255,255,.1);padding:10px 24px;border-radius:6px;font-weight:500;cursor:pointer;font-size:13px;margin-left:8px}</style></head><body>
-<div id="app"></div>
-<script>
-const secciones=[
-{nombre:"Inventario y RAT",q:[{p:"¿La empresa tiene un inventario de los datos personales que maneja?",w:3},{p:"¿Saben dónde se almacenan esos datos (servidores, nube, papel, email)?",w:3},{p:"¿Han identificado qué datos son sensibles (salud, biometría, antecedentes)?",w:3}]},
-{nombre:"Consentimientos",q:[{p:"¿Tienen consentimientos firmados por los trabajadores para tratar sus datos?",w:3},{p:"¿Los consentimientos son específicos (no genéricos) y revocables?",w:3},{p:"¿Tienen un proceso para registrar cuándo y cómo se obtuvo cada consentimiento?",w:3}]},
-{nombre:"Seguridad y Accesos",q:[{p:"¿Los datos de salud están separados del resto de la información laboral?",w:3},{p:"¿Tienen controles de acceso (quién ve qué) sobre los datos sensibles?",w:3},{p:"¿Usan cifrado o medidas técnicas para proteger los datos almacenados?",w:3}]},
-{nombre:"Proveedores y DPA",q:[{p:"¿Tienen contratos con cláusulas de protección de datos con sus proveedores?",w:3},{p:"¿Han firmado acuerdos de confidencialidad con quienes procesan datos por cuenta de la empresa?",w:3},{p:"¿Tienen designado un encargado de protección de datos (interno o externo)?",w:1}]},
-{nombre:"Capacitación",q:[{p:"¿Han capacitado al personal sobre manejo de datos personales?",w:3},{p:"¿Tienen una política de protección de datos documentada y comunicada?",w:3},{p:"¿El personal de SST sabe qué datos no puede compartir con gerencia?",w:3}]},
-{nombre:"Gobernanza",q:[{p:"¿Tienen un registro formal de todas las actividades de tratamiento de datos?",w:3},{p:"¿Han designado un responsable del cumplimiento normativo en datos?",w:3},{p:"¿Tienen un procedimiento para responder a solicitudes de acceso, rectificación o eliminación?",w:1}]},
-{nombre:"Prácticas y Brechas",q:[{p:"¿Han tenido incidentes de seguridad con datos de trabajadores en los últimos 2 años?",w:3,invertir:true},{p:"¿Tienen un protocolo para notificar brechas de seguridad a la autoridad?",w:3}]}
-];
-const recomendaciones = {
-  0:[{condicion:l=>l<6,texto:"Realizar un inventario completo de todos los datos personales que maneja la empresa. Partir por las fichas clínicas, exámenes preocupacionales y evaluaciones psicosociales.",prioridad:1},{condicion:l=>l<6,texto:"Identificar dónde se almacena cada tipo de dato: servidor local, nube, papel en bodega, correos electrónicos. Documentar cada ubicación.",prioridad:2},{condicion:l=>l<6,texto:"Elaborar el Registro de Actividades de Tratamiento (RAT) usando la plantilla que GesstIA genera automáticamente.",prioridad:3}],
-  1:[{condicion:l=>l<6,texto:"Revisar y actualizar todos los consentimientos informados. Deben ser específicos (para cada finalidad), no genéricos, y el trabajador debe poder revocarlos.",prioridad:1},{condicion:l=>l<6,texto:"Implementar un registro de consentimientos donde quede trazabilidad de cuándo se obtuvo, por qué medio y qué se autorizó.",prioridad:2}],
-  2:[{condicion:l=>l<6,texto:"Segmentar los datos de salud: crear una base de datos separada (o carpeta cifrada) solo para fichas clínicas, exámenes y evaluaciones psicosociales.",prioridad:1},{condicion:l=>l<6,texto:"Implementar control de acceso por roles: no todos en SST necesitan ver todos los datos. El prevencionista ve lo operacional; el médico ve lo clínico.",prioridad:2},{condicion:l=>l<6,texto:"Evaluar cifrado de datos sensibles, al menos en tránsito (HTTPS) y en reposo si están en servidores compartidos.",prioridad:3}],
-  3:[{condicion:l=>l<6,texto:"Revisar los contratos con proveedores (mutuales, centros médicos, software) e incluir cláusulas de protección de datos y confidencialidad.",prioridad:1},{condicion:l=>l<6,texto:"Si la empresa tiene más de 50 trabajadores o maneja datos sensibles, designar un DPO (interno o externo) antes de diciembre 2026.",prioridad:2}],
-  4:[{condicion:l=>l<6,texto:"Realizar una capacitación obligatoria a todo el personal que maneje datos: SST, RRHH, legal, administrativos. Enfocar en qué NO compartir.",prioridad:1},{condicion:l=>l<6,texto:"Redactar y publicar una política de protección de datos accesible para todos los trabajadores.",prioridad:2}],
-  5:[{condicion:l=>l<4,texto:"Designar formalmente a un responsable (puede ser externo) que lidere el cumplimiento de la Ley 21.719.",prioridad:1},{condicion:l=>l<4,texto:"Establecer un procedimiento interno para responder solicitudes de acceso, rectificación, cancelación y oposición (derechos ARCO) en máximo 10 días hábiles.",prioridad:2}],
-  6:[{condicion:l=>l<4,texto:"Implementar un protocolo de notificación de brechas: quién reporta, a quién, en qué plazo. La ley exige notificar a la Agencia APDP en 72 horas.",prioridad:1},{condicion:l=>l<6&&secciones[6].q.reduce((a,b)=>a+b.w,0)>3,texto:"Si han tenido incidentes previos, documentar las lecciones aprendidas y las medidas correctivas implementadas.",prioridad:2}]
-};
-let paso=0,resp={};
-function init(){renderSec(0)}
-function renderSec(n){
-  paso=n;let s=secciones[n],app=document.getElementById("app");
-  let progress=secciones.map((_,i)=>`<div class="bar ${i<n?"done":i==n?"current":""}"></div>`).join("");
-  let preguntas=s.q.map((q,i)=>{
-    let idx=secciones.slice(0,n).reduce((a,b)=>a+b.q.length,0)+i;
-    return `<div class="q"><p>${q.p}</p><div class="opts">
-      <button class="${resp[idx]=='si'?'selected':''}" onclick="resp(${idx},'si',${n})">✅ Sí</button>
-      <button class="${resp[idx]=='parcial'?'selected':''}" onclick="resp(${idx},'parcial',${n})">⚠️ Parcial</button>
-      <button class="${resp[idx]=='no'?'selected':''}" onclick="resp(${idx},'no',${n})">❌ No</button>
-    </div></div>`
-  }).join("");
-  app.innerHTML=`<div class="progress">${progress}</div><div class="step">
-    <h3>${n+1}. ${s.nombre}</h3><p>${s.q.length} preguntas</p>${preguntas}
-    <div class="nav"><button class="btn-prev" onclick="ant()" ${n==0?"style=visibility:hidden":""}>← Anterior</button>
-    <button class="btn-next" onclick="sig()">${n<secciones.length-1?"Siguiente →":"Ver resultados"}</button></div></div>`;
-}
-function resp(idx,val,sec){resp[idx]=val;renderSec(sec)}
-function ant(){if(paso>0)renderSec(paso-1)}
-function sig(){
-  if(paso<secciones.length-1){renderSec(paso+1);return}
-  let pts=0,max=0,tot=0,totMax=0;
-  let catPts=[],catMax=[];
-  secciones.forEach((s,i)=>{
-    let cp=0,cm=0;
-    s.q.forEach((q,j)=>{
-      let idx=secciones.slice(0,i).reduce((a,b)=>a+b.q.length,0)+j;
-      let v=resp[idx];
-      cm+=q.w;totMax+=q.w;
-      if(q.invertir){if(v=='no'){cp+=q.w;pts+=q.w}else if(v=='parcial'){cp+=Math.round(q.w*0.5);pts+=Math.round(q.w*0.5)}}
-      else{if(v=='si'){cp+=q.w;pts+=q.w}else if(v=='parcial'){cp+=Math.round(q.w*0.5);pts+=Math.round(q.w*0.5)}}
-    });
-    catPts.push(cp);catMax.push(cm);
-  });
-  let pct=Math.round(pts/totMax*100);
-  let nivel=pct<30?"Crítico":pct<55?"Insuficiente":pct<80?"En desarrollo":"Óptimo";
-  let color=pct<30?"#dc2626":pct<55?"#d97706":pct<80?"#eab308":"#22c55e";
-  let recsHtml="";
-  secciones.forEach((s,i)=>{if(recomendaciones[i])recomendaciones[i].forEach(r=>{if(r.condicion(catPts[i]))recsHtml+=`<div class="rec">🔴 Prioridad ${r.prioridad}: ${r.texto}</div>`})});
-  let catsHtml=secciones.map((s,i)=>{
-    let sc=Math.round(catPts[i]/catMax[i]*100);
-    let st=sc<30?"🔴":sc<55?"🟡":sc<80?"🟢":"✅";
-    let det=s.q.map((q,j)=>{
-      let idx=secciones.slice(0,i).reduce((a,b)=>a+b.q.length,0)+j;
-      let v=resp[idx]||"no";
-      let icon=v=='si'?'✅':v=='parcial'?'⚠️':'❌';
-      return `<div class="q-det">${icon} ${q.p}</div>`;
-    }).join("");
-    return `<div class="cat"><h4>${st} ${s.nombre} — ${sc}%</h4>${det}</div>`;
-  }).join("");
-  let app=document.getElementById("app");
-  app.innerHTML=`<div class="results">
-    <h3>Resultados GesstIA</h3>
-    <div class="score">${pct}%</div><div class="score-label">Cumplimiento general · Nivel: ${nivel}</div>
-    ${recsHtml}
-    <h4 style="margin:16px 0 8px">Desglose por área</h4>${catsHtml}
-    <h4 style="margin:16px 0 8px">📋 Plan de Acción</h4>
-    <div style="background:rgba(99,102,241,.06);border-radius:8px;padding:16px;margin-bottom:12px;font-size:13px">
-      <strong>Los 30 días críticos:</strong><br><br>
-      Semana 1: Inventario de datos personales<br>
-      Semana 2: Elaborar RAT y segmentar datos de salud<br>
-      Semana 3: Revisar consentimientos y contratos con proveedores<br>
-      Semana 4: Capacitar personal y publicar política interna<br><br>
-      <strong>GesstIA puede hacer todo esto por ti en minutos.</strong>
-    </div>
-    <button class="btn-print" onclick="window.print()">🖨️ Descargar PDF</button>
-    <button class="restart" onclick="init()">↻ Nuevo diagnóstico</button>
-  </div>`;
-}
-init();
-</script></body></html>' style="width:100%;height:620px;border:none"></iframe>
+<div class="diag-box" id="diagApp"></div>
 </div>
 </section>
 
@@ -319,5 +215,104 @@ init();
 GesstIA — gestión SST inteligente · © 2026
 </footer>
 
+<script>
+// Diagnóstico integrado
+const SECCIONES=[
+{nombre:"Inventario y RAT",q:[{p:"¿La empresa tiene un inventario de los datos personales que maneja?",w:3},{p:"¿Saben dónde se almacenan esos datos (servidores, nube, papel, email)?",w:3},{p:"¿Han identificado qué datos son sensibles (salud, biometría, antecedentes)?",w:3}]},
+{nombre:"Consentimientos",q:[{p:"¿Tienen consentimientos firmados por los trabajadores para tratar sus datos?",w:3},{p:"¿Los consentimientos son específicos (no genéricos) y revocables?",w:3},{p:"¿Tienen un proceso para registrar cuándo y cómo se obtuvo cada consentimiento?",w:3}]},
+{nombre:"Seguridad y Accesos",q:[{p:"¿Los datos de salud están separados del resto de la información laboral?",w:3},{p:"¿Tienen controles de acceso (quién ve qué) sobre los datos sensibles?",w:3},{p:"¿Usan cifrado o medidas técnicas para proteger los datos almacenados?",w:3}]},
+{nombre:"Proveedores y DPA",q:[{p:"¿Tienen contratos con cláusulas de protección de datos con sus proveedores?",w:3},{p:"¿Han firmado acuerdos de confidencialidad con quienes procesan datos por cuenta de la empresa?",w:3},{p:"¿Tienen designado un encargado de protección de datos (interno o externo)?",w:1}]},
+{nombre:"Capacitación",q:[{p:"¿Han capacitado al personal sobre manejo de datos personales?",w:3},{p:"¿Tienen una política de protección de datos documentada y comunicada?",w:3},{p:"¿El personal de SST sabe qué datos no puede compartir con gerencia?",w:3}]},
+{nombre:"Gobernanza",q:[{p:"¿Tienen un registro formal de todas las actividades de tratamiento de datos?",w:3},{p:"¿Han designado un responsable del cumplimiento normativo en datos?",w:3},{p:"¿Tienen un procedimiento para responder a solicitudes de acceso, rectificación o eliminación?",w:1}]},
+{nombre:"Prácticas y Brechas",q:[{p:"¿Han tenido incidentes de seguridad con datos de trabajadores en los últimos 2 años?",w:3,invertir:true},{p:"¿Tienen un protocolo para notificar brechas de seguridad a la autoridad?",w:3}]}
+];
+const RECS={
+0:[{c:l=>l<6,t:"Realizar un inventario completo de todos los datos personales que maneja la empresa. Partir por las fichas clínicas, exámenes preocupacionales y evaluaciones psicosociales.",p:1},{c:l=>l<6,t:"Identificar dónde se almacena cada tipo de dato: servidor local, nube, papel en bodega, correos electrónicos. Documentar cada ubicación.",p:2},{c:l=>l<6,t:"Elaborar el Registro de Actividades de Tratamiento (RAT) usando la plantilla que GesstIA genera automáticamente.",p:3}],
+1:[{c:l=>l<6,t:"Revisar y actualizar todos los consentimientos informados. Deben ser específicos (para cada finalidad), no genéricos, y el trabajador debe poder revocarlos.",p:1},{c:l=>l<6,t:"Implementar un registro de consentimientos donde quede trazabilidad de cuándo se obtuvo, por qué medio y qué se autorizó.",p:2}],
+2:[{c:l=>l<6,t:"Segmentar los datos de salud: crear una base de datos separada (o carpeta cifrada) solo para fichas clínicas, exámenes y evaluaciones psicosociales.",p:1},{c:l=>l<6,t:"Implementar control de acceso por roles: no todos en SST necesitan ver todos los datos. El prevencionista ve lo operacional; el médico ve lo clínico.",p:2},{c:l=>l<6,t:"Evaluar cifrado de datos sensibles, al menos en tránsito (HTTPS) y en reposo si están en servidores compartidos.",p:3}],
+3:[{c:l=>l<6,t:"Revisar los contratos con proveedores (mutuales, centros médicos, software) e incluir cláusulas de protección de datos y confidencialidad.",p:1},{c:l=>l<6,t:"Si la empresa tiene más de 50 trabajadores o maneja datos sensibles, designar un DPO (interno o externo) antes de diciembre 2026.",p:2}],
+4:[{c:l=>l<6,t:"Realizar una capacitación obligatoria a todo el personal que maneje datos: SST, RRHH, legal, administrativos. Enfocar en qué NO compartir.",p:1},{c:l=>l<6,t:"Redactar y publicar una política de protección de datos accesible para todos los trabajadores.",p:2}],
+5:[{c:l=>l<4,t:"Designar formalmente a un responsable (puede ser externo) que lidere el cumplimiento de la Ley 21.719.",p:1},{c:l=>l<4,t:"Establecer un procedimiento interno para responder solicitudes de acceso, rectificación, cancelación y oposición (derechos ARCO) en máximo 10 días hábiles.",p:2}],
+6:[{c:l=>l<4,t:"Implementar un protocolo de notificación de brechas: quién reporta, a quién, en qué plazo. La ley exige notificar a la Agencia APDP en 72 horas.",p:1},{c:l=>l<6,t:"Si han tenido incidentes previos, documentar las lecciones aprendidas y las medidas correctivas implementadas.",p:2}]
+};
+let dPaso=0,dResp={};
+function dInit(){dRender(0)}
+function dRender(n){
+  dPaso=n;
+  let s=SECCIONES[n];
+  let app=document.getElementById('diagApp');
+  let prog=SECCIONES.map((_,i)=>`<div class="diag-bar ${i<n?'done':i==n?'current':''}"></div>`).join('');
+  let qs=s.q.map((q,i)=>{
+    let idx=SECCIONES.slice(0,n).reduce((a,b)=>a+b.q.length,0)+i;
+    let opts=['si','parcial','no'].map(v=>
+      `<button class="${dResp[idx]===v?'selected':''}" onclick="dResp[${idx}]='${v}';dRender(${n})">${
+        v==='si'?'✅ Sí':v==='parcial'?'⚠️ Parcial':'❌ No'
+      }</button>`
+    ).join('');
+    return `<div class="diag-q"><p>${q.p}</p><div class="diag-opts">${opts}</div></div>`;
+  }).join('');
+  app.innerHTML=`<div class="diag-progress">${prog}</div><div class="diag-step">
+    <h3>${n+1}. ${s.nombre}</h3><div class="diag-sub">${s.q.length} preguntas</div>${qs}
+    <div class="diag-nav">
+      <button class="btn-d-prev" onclick="dPrev()" style="${n===0?'visibility:hidden':''}">← Anterior</button>
+      <button class="btn-d-next" onclick="dNext()">${n<SECCIONES.length-1?'Siguiente →':'Ver resultados'}</button>
+    </div></div>`;
+}
+function dPrev(){if(dPaso>0)dRender(dPaso-1)}
+function dNext(){
+  if(dPaso<SECCIONES.length-1){dRender(dPaso+1);return}
+  let pts=0,totMax=0,catPts=[],catMax=[];
+  SECCIONES.forEach((s,i)=>{
+    let cp=0,cm=0;
+    s.q.forEach((q,j)=>{
+      let idx=SECCIONES.slice(0,i).reduce((a,b)=>a+b.q.length,0)+j;
+      let v=dResp[idx];cm+=q.w;totMax+=q.w;
+      if(q.invertir){
+        if(v==='no'){cp+=q.w;pts+=q.w}
+        else if(v==='parcial'){cp+=Math.round(q.w*0.5);pts+=Math.round(q.w*0.5)}
+      }else{
+        if(v==='si'){cp+=q.w;pts+=q.w}
+        else if(v==='parcial'){cp+=Math.round(q.w*0.5);pts+=Math.round(q.w*0.5)}
+      }
+    });
+    catPts.push(cp);catMax.push(cm);
+  });
+  let pct=totMax?Math.round(pts/totMax*100):0;
+  let nivel=pct<30?'Crítico':pct<55?'Insuficiente':pct<80?'En desarrollo':'Óptimo';
+  let recsHtml='';
+  SECCIONES.forEach((s,i)=>{
+    if(RECS[i])RECS[i].forEach(r=>{if(r.c(catPts[i]))recsHtml+=`<div class="diag-rec">🔴 Prioridad ${r.p}: ${r.t}</div>`});
+  });
+  let catsHtml=SECCIONES.map((s,i)=>{
+    let sc=catMax[i]?Math.round(catPts[i]/catMax[i]*100):0;
+    let st=sc<30?'🔴':sc<55?'🟡':sc<80?'🟢':'✅';
+    let det=s.q.map((q,j)=>{
+      let idx=SECCIONES.slice(0,i).reduce((a,b)=>a+b.q.length,0)+j;
+      let v=dResp[idx]||'no';
+      return `<div class="q-det">${v==='si'?'✅':v==='parcial'?'⚠️':'❌'} ${q.p}</div>`;
+    }).join('');
+    return `<div class="diag-cat"><h4>${st} ${s.nombre} — ${sc}%</h4>${det}</div>`;
+  }).join('');
+  let app=document.getElementById('diagApp');
+  app.innerHTML=`<div class="diag-results">
+    <h3 style="font-size:20px">Resultados GesstIA</h3>
+    <div class="big-score">${pct}%</div><div class="score-label">Cumplimiento general · Nivel: <strong style="color:${pct<30?'#ef4444':pct<55?'#f59e0b':pct<80?'#eab308':'#22c55e'}">${nivel}</strong></div>
+    ${recsHtml}
+    <h4 style="margin:16px 0 8px;font-size:15px">Desglose por área</h4>${catsHtml}
+    <h4 style="margin:16px 0 8px;font-size:15px">📋 Plan de Acción</h4>
+    <div class="diag-plan">
+      <strong style="color:#e2e8f0">Los 30 días críticos:</strong><br><br>
+      Semana 1: Inventario de datos personales<br>
+      Semana 2: Elaborar RAT y segmentar datos de salud<br>
+      Semana 3: Revisar consentimientos y contratos con proveedores<br>
+      Semana 4: Capacitar personal y publicar política interna<br><br>
+      <strong>GesstIA puede hacer todo esto por ti en minutos.</strong>
+    </div>
+    <button class="btn-d-print" onclick="window.print()">🖨️ Descargar PDF</button>
+    <button class="btn-d-restart" onclick="dInit()">↻ Nuevo diagnóstico</button>
+  </div>`;
+}
+dInit();
+</script>
 </body>
 </html>
